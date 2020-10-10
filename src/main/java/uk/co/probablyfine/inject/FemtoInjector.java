@@ -41,7 +41,7 @@ public class FemtoInjector {
             throw new RuntimeException(e);
         }
 
-        throw new InjectionException("Could not find valid constructor");
+        throw new InjectionException("No injectable constructor for [" + klass.getName() + "]");
     }
 
     public <T> void bind(Class<T> klass) {

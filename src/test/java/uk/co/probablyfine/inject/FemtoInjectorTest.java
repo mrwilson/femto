@@ -92,4 +92,18 @@ class FemtoInjectorTest {
 
         assertThat(instance.say(), is("Two"));
     }
+
+    @Test
+    void throwsException_ifNoValidConstructors() {
+        injector.bind(SingleDependencyClass.class);
+
+        var exception =
+                assertThrows(
+                        InjectionException.class, () -> injector.get(SingleDependencyClass.class));
+
+        assertThat(
+                exception.getMessage(),
+                is(
+                        "No injectable constructor for [uk.co.probablyfine.inject.SingleDependencyClass]"));
+    }
 }
