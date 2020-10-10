@@ -105,4 +105,14 @@ class FemtoInjectorTest {
                 is(
                         "No injectable constructor for [uk.co.probablyfine.inject.SingleDependencyClass]"));
     }
+
+    @Test
+    void throwsException_ifMultipleInstancesForSameClass() {
+        injector.bind(String.class, "one");
+
+        var exception =
+                assertThrows(InjectionException.class, () -> injector.bind(String.class, "two"));
+
+        assertThat(exception.getMessage(), is("Binding already exists for [java.lang.String]"));
+    }
 }
