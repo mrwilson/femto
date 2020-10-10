@@ -39,6 +39,10 @@ public class FemtoInjector {
     }
 
     public <T> void bind(Class<T> klass) {
+        if (boundClasses.getOrDefault(klass, null) != null) {
+            throw new InjectionException("Binding already exists for [" + klass.getName() + "]");
+        }
+
         boundClasses.put(klass, null);
     }
 
