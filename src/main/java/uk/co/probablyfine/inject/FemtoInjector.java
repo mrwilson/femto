@@ -1,5 +1,6 @@
 package uk.co.probablyfine.inject;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,17 @@ public class FemtoInjector {
         }
 
         try {
+            var parameterTypes = klass.getConstructors()[0].getParameterTypes();
+
+            if (parameterTypes.length == 1) {
+                return klass.getConstructor(parameterTypes).newInstance(
+                        this.get(parameterTypes[0])
+                );
+            }
+
             return klass.getConstructor().newInstance();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
