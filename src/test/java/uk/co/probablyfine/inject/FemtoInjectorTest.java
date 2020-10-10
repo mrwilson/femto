@@ -50,4 +50,17 @@ class FemtoInjectorTest {
 
         assertThat(instance.say(), is("Hello One, World Two!"));
     }
+
+    @Test
+    void returnsBoundClass_WithMultiLevelDependencyHierarchy() {
+        var injector = new FemtoInjector();
+
+        injector.bind(MultipleLevelDependencyClass.class);
+        injector.bind(MultipleLevelDependencyClass.InnerOne.class);
+        injector.bind(MultipleLevelDependencyClass.InnerTwo.class);
+
+        var instance = injector.get(MultipleLevelDependencyClass.class);
+
+        assertThat(instance.say(), is("Hello One, World Two!"));
+    }
 }
