@@ -6,7 +6,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
-import uk.co.probablyfine.inject.FemtoInjector.InjectionException;
 
 class FemtoInjectorTest {
 
