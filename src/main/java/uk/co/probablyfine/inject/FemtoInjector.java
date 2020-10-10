@@ -1,7 +1,8 @@
 package uk.co.probablyfine.inject;
 
+import static java.util.Arrays.stream;
+
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,24 +19,23 @@ public class FemtoInjector {
             for (Constructor<?> constructor : klass.getConstructors()) {
                 var parameterTypes = constructor.getParameterTypes();
 
-                if (!Arrays.stream(parameterTypes).allMatch(boundClasses::containsKey)) {
+                if (!stream(parameterTypes).allMatch(boundClasses::containsKey)) {
                     continue;
                 }
 
                 return klass.getConstructor(parameterTypes)
                         .newInstance(
-                                Arrays.stream(parameterTypes)
-                                        .map(
-                                                klazz ->
-                                                        boundClasses.computeIfAbsent(
-                                                                klazz, this::get))
-                                        .toArray());
+                                stream(parameterTypes).map(this::loadOrCreateInstance).toArray());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         throw new InjectionException("No injectable constructor for [" + klass.getName() + "]");
+    }
+
+    private Object loadOrCreateInstance(Class<?> klazz) {
+        return boundClasses.computeIfAbsent(klazz, this::get);
     }
 
     public <T> void bind(Class<T> klass) {
