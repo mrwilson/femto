@@ -37,4 +37,17 @@ class FemtoInjectorTest {
 
         assertThat(instance.say(), is("Hello, World!"));
     }
+
+    @Test
+    void returnsBoundClass_WithMultipleDependencies() {
+        var injector = new FemtoInjector();
+
+        injector.bind(MultipleDependencyClass.class);
+        injector.bind(MultipleDependencyClass.InnerOne.class);
+        injector.bind(MultipleDependencyClass.InnerTwo.class);
+
+        var instance = injector.get(MultipleDependencyClass.class);
+
+        assertThat(instance.say(), is("Hello One, World Two!"));
+    }
 }

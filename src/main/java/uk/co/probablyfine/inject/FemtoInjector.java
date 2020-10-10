@@ -22,6 +22,12 @@ public class FemtoInjector {
                 );
             }
 
+            if (parameterTypes.length == 2) {
+                return klass.getConstructor(parameterTypes).newInstance(
+                        this.get(parameterTypes[0]), this.get(parameterTypes[1])
+                );
+            }
+
             return klass.getConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
