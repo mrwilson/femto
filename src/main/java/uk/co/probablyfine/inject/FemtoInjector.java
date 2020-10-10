@@ -15,6 +15,10 @@ public class FemtoInjector {
             throw new InjectionException("Class [" + klass.getName() + "] was not bound");
         }
 
+        if (boundClasses.getOrDefault(klass, null) != null) {
+            return klass.cast(boundClasses.get(klass));
+        }
+
         try {
             for (Constructor<?> constructor : klass.getConstructors()) {
                 var parameterTypes = constructor.getParameterTypes();
@@ -23,9 +27,13 @@ public class FemtoInjector {
                     continue;
                 }
 
-                return klass.getConstructor(parameterTypes)
+                var instance = klass.getConstructor(parameterTypes)
                         .newInstance(
                                 stream(parameterTypes).map(this::loadOrCreateInstance).toArray());
+
+                boundClasses.put(klass, instance);
+
+                return instance;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
