@@ -1,17 +1,18 @@
 package uk.co.probablyfine.inject;
 
-import org.junit.jupiter.api.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
+import org.junit.jupiter.api.Test;
+
 class FemtoInjectorTest {
+
+    private final FemtoInjector injector = new FemtoInjector();
 
     @Test
     void returnsNullForUnboundClass() {
-        var injector = new FemtoInjector();
         EmptyClass klass = injector.get(EmptyClass.class);
 
         assertThat(klass, nullValue());
@@ -19,8 +20,6 @@ class FemtoInjectorTest {
 
     @Test
     void returnsBoundClass_WithPublicZeroArgumentConstructor() {
-        var injector = new FemtoInjector();
-
         injector.bind(EmptyConstructorClass.class);
 
         assertThat(injector.get(EmptyConstructorClass.class), notNullValue());
@@ -28,8 +27,6 @@ class FemtoInjectorTest {
 
     @Test
     void returnsBoundClass_WithSingleDependency() {
-        var injector = new FemtoInjector();
-
         injector.bind(SingleDependencyClass.class);
         injector.bind(SingleDependencyClass.Inner.class);
 
@@ -40,8 +37,6 @@ class FemtoInjectorTest {
 
     @Test
     void returnsBoundClass_WithMultipleDependencies() {
-        var injector = new FemtoInjector();
-
         injector.bind(MultipleDependencyClass.class);
         injector.bind(MultipleDependencyClass.InnerOne.class);
         injector.bind(MultipleDependencyClass.InnerTwo.class);
@@ -53,8 +48,6 @@ class FemtoInjectorTest {
 
     @Test
     void returnsBoundClass_WithMultiLevelDependencyHierarchy() {
-        var injector = new FemtoInjector();
-
         injector.bind(MultipleLevelDependencyClass.class);
         injector.bind(MultipleLevelDependencyClass.InnerOne.class);
         injector.bind(MultipleLevelDependencyClass.InnerTwo.class);
@@ -66,14 +59,13 @@ class FemtoInjectorTest {
 
     @Test
     void returnsBoundClass_UsingProvidedInstances() {
-        var injector = new FemtoInjector();
-
-        var instanceDependency = new SingleDependencyClass.Inner() {
-            @Override
-            public String say() {
-                return "Goodbye, World!";
-            }
-        };
+        var instanceDependency =
+                new SingleDependencyClass.Inner() {
+                    @Override
+                    public String say() {
+                        return "Goodbye, World!";
+                    }
+                };
 
         injector.bind(SingleDependencyClass.class);
         injector.bind(SingleDependencyClass.Inner.class, instanceDependency);

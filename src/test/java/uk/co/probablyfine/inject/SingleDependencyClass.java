@@ -4,8 +4,7 @@ class SingleDependencyClass {
     private final Inner inner;
 
     static class Inner {
-        public Inner() {
-        }
+        public Inner() {}
 
         public String say() {
             return "Hello, World!";

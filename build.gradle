@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'uk.co.probablyfine.gradle.test-commit-revert' version '0.3.5'
+    id 'com.diffplug.spotless' version '5.6.1'
 }
 
 group 'uk.co.probablyfine'
@@ -22,6 +23,12 @@ dependencies {
 
 testCommitRevert {
     promptForMessage = true
+}
+
+spotless {
+    java {
+        googleJavaFormat('1.9').aosp()
+    }
 }
 
 test {

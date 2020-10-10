@@ -4,8 +4,7 @@ class MultipleLevelDependencyClass {
     private final InnerTwo innerTwo;
 
     static class InnerOne {
-        public InnerOne() {
-        }
+        public InnerOne() {}
 
         public String say() {
             return "Hello One";

@@ -5,8 +5,7 @@ class MultipleDependencyClass {
     private final InnerTwo innerTwo;
 
     static class InnerOne {
-        public InnerOne() {
-        }
+        public InnerOne() {}
 
         public String say() {
             return "Hello One";
@@ -14,8 +13,7 @@ class MultipleDependencyClass {
     }
 
     static class InnerTwo {
-        public InnerTwo() {
-        }
+        public InnerTwo() {}
 
         public String say() {
             return "World Two!";

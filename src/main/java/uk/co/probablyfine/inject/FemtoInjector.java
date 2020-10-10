@@ -16,11 +16,11 @@ public class FemtoInjector {
         try {
             var parameterTypes = klass.getConstructors()[0].getParameterTypes();
 
-            return klass.getConstructor(parameterTypes).newInstance(
-                Arrays.stream(parameterTypes)
-                    .map(klazz -> boundClasses.computeIfAbsent(klazz, this::get))
-                    .toArray()
-            );
+            return klass.getConstructor(parameterTypes)
+                    .newInstance(
+                            Arrays.stream(parameterTypes)
+                                    .map(klazz -> boundClasses.computeIfAbsent(klazz, this::get))
+                                    .toArray());
 
         } catch (Exception e) {
             throw new RuntimeException(e);
