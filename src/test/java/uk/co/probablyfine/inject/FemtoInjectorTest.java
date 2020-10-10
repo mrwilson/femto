@@ -2,10 +2,11 @@ package uk.co.probablyfine.inject;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import uk.co.probablyfine.inject.FemtoInjector.InjectionException;
 
 class FemtoInjectorTest {
 
@@ -13,9 +14,12 @@ class FemtoInjectorTest {
 
     @Test
     void returnsNullForUnboundClass() {
-        EmptyClass klass = injector.get(EmptyClass.class);
+        var exception =
+                assertThrows(InjectionException.class, () -> injector.get(EmptyClass.class));
 
-        assertThat(klass, nullValue());
+        assertThat(
+                exception.getMessage(),
+                is("Class [uk.co.probablyfine.inject.EmptyClass] was not bound"));
     }
 
     @Test

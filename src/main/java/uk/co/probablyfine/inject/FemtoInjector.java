@@ -8,9 +8,15 @@ public class FemtoInjector {
 
     private final Map<Class<?>, Object> boundClasses = new HashMap<>();
 
+    static class InjectionException extends RuntimeException {
+        InjectionException(String message) {
+            super(message);
+        }
+    }
+
     public <T> T get(Class<T> klass) {
         if (!boundClasses.containsKey(klass)) {
-            return null;
+            throw new InjectionException("Class [" + klass.getName() + "] was not bound");
         }
 
         try {
