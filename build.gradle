@@ -1,0 +1,43 @@
+plugins {
+    id 'java-library'
+    id 'uk.co.probablyfine.gradle.test-commit-revert' version '0.3.5'
+}
+
+group 'uk.co.probablyfine'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 15
+targetCompatibility = 15
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+}
+
+testCommitRevert {
+    promptForMessage = true
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        showStandardStreams = true
+    }
+    jvmArgs(['--enable-preview'])
+
+}
+
+compileTestJava {
+    options.compilerArgs += ["--enable-preview"]
+}
+
+compileJava {
+    options.compilerArgs += ["--enable-preview"]
+}
