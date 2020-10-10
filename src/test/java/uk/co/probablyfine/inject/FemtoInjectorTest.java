@@ -124,9 +124,14 @@ class FemtoInjectorTest {
         injector.get(SingleDependencyClass.class);
 
         var exception =
-                assertThrows(InjectionException.class, () -> injector.bind(SingleDependencyClass.Inner.class));
+                assertThrows(
+                        InjectionException.class,
+                        () -> injector.bind(SingleDependencyClass.Inner.class));
 
-        assertThat(exception.getMessage(), is("Binding already exists for [uk.co.probablyfine.inject.SingleDependencyClass$Inner]"));
+        assertThat(
+                exception.getMessage(),
+                is(
+                        "Binding already exists for [uk.co.probablyfine.inject.SingleDependencyClass$Inner]"));
     }
 
     @Test
