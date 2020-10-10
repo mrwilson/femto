@@ -1,6 +1,6 @@
-# femto-di
+# femto
 
-FemtoDI, a teeny-tiny [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) library.
+Femto DI, a teeny-tiny [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) library.
 
 ```java
 var injector = new FemtoInjector();
