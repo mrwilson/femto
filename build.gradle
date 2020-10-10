@@ -1,17 +1,24 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.8.4'
     id 'uk.co.probablyfine.gradle.test-commit-revert' version '0.3.5'
     id 'com.diffplug.spotless' version '5.6.1'
 }
 
+ext {
+    gitUrl = "https://github.com/mrwilson/femto"
+}
+
 group 'uk.co.probablyfine'
-version '1.0-SNAPSHOT'
+version '0.1.0'
 
 sourceCompatibility = 14
 targetCompatibility = 14
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -37,4 +44,94 @@ test {
     testLogging {
         showStandardStreams = true
     }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+tasks.withType(AbstractArchiveTask) {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+tasks.withType(Javadoc).all { enabled = false }
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+def pomConfig = {
+    developers {
+        developer {
+            id "probablyfine"
+            name 'Alex Wilson'
+            email "alex+java@probablyfine.co.uk"
+        }
+    }
+
+    licenses {
+        license {
+            name 'MIT'
+            url gitUrl + '/blob/main/LICENCE.md'
+            distribution 'repo'
+        }
+    }
+
+    scm {
+        url gitUrl
+    }
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            groupId project.group
+            artifactId project.name
+            version project.version
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'A teeny-tiny dependency injection library')
+                root.appendNode('name', project.name)
+                root.appendNode('url', gitUrl)
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getProperty('bintray.user')
+    key = System.getProperty('bintray.key')
+    publications = ['mavenPublication']
+
+    pkg {
+        repo = project.group
+        name = project.name
+        licenses = ['MIT']
+        vcsUrl = gitUrl
+        version {
+            name = project.version
+            desc = project.version
+            released  = new Date()
+            gpg {
+                sign = true
+            }
+        }
+    }
+    publish = true
 }
