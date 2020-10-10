@@ -7,8 +7,8 @@ plugins {
 group 'uk.co.probablyfine'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 15
-targetCompatibility = 15
+sourceCompatibility = 14
+targetCompatibility = 14
 
 repositories {
     mavenCentral()
@@ -37,14 +37,4 @@ test {
     testLogging {
         showStandardStreams = true
     }
-    jvmArgs(['--enable-preview'])
-
-}
-
-compileTestJava {
-    options.compilerArgs += ["--enable-preview"]
-}
-
-compileJava {
-    options.compilerArgs += ["--enable-preview"]
 }
