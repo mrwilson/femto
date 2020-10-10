@@ -37,30 +37,4 @@ class FemtoInjectorTest {
 
         assertThat(instance.say(), is("Hello, World!"));
     }
-
-    static class EmptyClass {}
-
-    static class EmptyConstructorClass {
-        public EmptyConstructorClass() {}
-    }
-
-    static class SingleDependencyClass {
-        private final Inner inner;
-
-        static class Inner {
-            public Inner() {}
-
-            public String say() {
-                return "Hello, World!";
-            }
-        }
-
-        public SingleDependencyClass(Inner inner) {
-            this.inner = inner;
-        }
-
-        public String say() {
-            return this.inner.say();
-        }
-    }
 }
