@@ -78,4 +78,18 @@ class FemtoInjectorTest {
 
         assertThat(instance.say(), is("Goodbye, World!"));
     }
+
+    @Test
+    void returnsBoundClass_WithSingleValidConstructor() {
+        injector.bind(SingleValidConstructorClass.class);
+
+        // Don't bind `InnerOne`, which makes one constructor invalid
+        // injector.bind(SingleValidConstructorClass.InnerOne.class);
+
+        injector.bind(SingleValidConstructorClass.InnerTwo.class);
+
+        var instance = injector.get(SingleValidConstructorClass.class);
+
+        assertThat(instance.say(), is("Two"));
+    }
 }
