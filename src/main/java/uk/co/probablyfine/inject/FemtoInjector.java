@@ -1,16 +1,15 @@
 package uk.co.probablyfine.inject;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FemtoInjector {
 
-    private final List<Class<?>> boundClasses = new ArrayList<>();
+    private final Map<Class<?>, Object> boundClasses = new HashMap<>();
 
     public <T> T get(Class<T> klass) {
-        if (!boundClasses.contains(klass)) {
+        if (!boundClasses.containsKey(klass)) {
             return null;
         }
 
@@ -18,7 +17,9 @@ public class FemtoInjector {
             var parameterTypes = klass.getConstructors()[0].getParameterTypes();
 
             return klass.getConstructor(parameterTypes).newInstance(
-                Arrays.stream(parameterTypes).map(this::get).toArray()
+                Arrays.stream(parameterTypes)
+                    .map(klazz -> boundClasses.computeIfAbsent(klazz, this::get))
+                    .toArray()
             );
 
         } catch (Exception e) {
@@ -27,6 +28,10 @@ public class FemtoInjector {
     }
 
     public <T> void bind(Class<T> klass) {
-        boundClasses.add(klass);
+        boundClasses.put(klass, null);
+    }
+
+    public <T> void bind(Class<T> klass, T instance) {
+        boundClasses.put(klass, instance);
     }
 }

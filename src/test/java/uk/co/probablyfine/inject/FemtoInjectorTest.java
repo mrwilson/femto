@@ -63,4 +63,23 @@ class FemtoInjectorTest {
 
         assertThat(instance.say(), is("Hello One, World Two!"));
     }
+
+    @Test
+    void returnsBoundClass_UsingProvidedInstances() {
+        var injector = new FemtoInjector();
+
+        var instanceDependency = new SingleDependencyClass.Inner() {
+            @Override
+            public String say() {
+                return "Goodbye, World!";
+            }
+        };
+
+        injector.bind(SingleDependencyClass.class);
+        injector.bind(SingleDependencyClass.Inner.class, instanceDependency);
+
+        var instance = injector.get(SingleDependencyClass.class);
+
+        assertThat(instance.say(), is("Goodbye, World!"));
+    }
 }
