@@ -1,5 +1,7 @@
 # femto
 
+![Maven Central](https://img.shields.io/maven-central/v/uk.co.probablyfine/femto?style=flat-square)
+
 Femto DI, a teeny-tiny [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) library.
 
 ```java
