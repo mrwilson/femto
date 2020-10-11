@@ -155,4 +155,14 @@ class FemtoInjectorTest {
 
         assertThat(instance.say(), is("Hello, World!"));
     }
+
+    @Test
+    void returnsBoundClass_BindingToInterfaceClass() {
+        injector.bind(ExampleInterface.class, ImplementsExampleInterface.class);
+        injector.bind(DependsOnInterface.class);
+
+        var instance = injector.get(DependsOnInterface.class);
+
+        assertThat(instance.say(), is("Hello, World!"));
+    }
 }
