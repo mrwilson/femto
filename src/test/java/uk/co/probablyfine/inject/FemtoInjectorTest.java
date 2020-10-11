@@ -6,6 +6,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import uk.co.probablyfine.inject.ExampleInterface.DependsOnInterface;
+import uk.co.probablyfine.inject.ExampleInterface.ImplementsExampleInterface;
 
 class FemtoInjectorTest {
 
@@ -142,5 +144,15 @@ class FemtoInjectorTest {
         var second = injector.get(EmptyConstructorClass.class);
 
         assertThat(first, is(second));
+    }
+
+    @Test
+    void returnsBoundClass_BindingToInterface() {
+        injector.bind(ExampleInterface.class, new ImplementsExampleInterface());
+        injector.bind(DependsOnInterface.class);
+
+        var instance = injector.get(DependsOnInterface.class);
+
+        assertThat(instance.say(), is("Hello, World!"));
     }
 }
