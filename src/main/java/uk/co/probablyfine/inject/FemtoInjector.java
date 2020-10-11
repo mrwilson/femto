@@ -1,6 +1,7 @@
 package uk.co.probablyfine.inject;
 
 import static java.util.Arrays.stream;
+import static java.util.function.Predicate.not;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -26,9 +27,9 @@ public class FemtoInjector {
             for (Constructor<?> constructor : implementingClass.getConstructors()) {
                 var parameterTypes = constructor.getParameterTypes();
 
-                if (!stream(parameterTypes)
+                if (stream(parameterTypes)
                         .map(this::implementingClass)
-                        .allMatch(boundClasses::containsKey)) {
+                        .anyMatch(not(boundClasses::containsKey))) {
                     continue;
                 }
 
