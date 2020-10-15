@@ -81,6 +81,10 @@ public class FemtoInjector {
     }
 
     public <T, U extends T> void bind(Class<T> original, Class<U> implementation) {
+        if (original == null) {
+            throw new IllegalArgumentException("Binding superclass must not be null");
+        }
+
         if (boundClasses.getOrDefault(implementingClass(original), null) != null) {
             throw new InjectionException("Binding already exists for [" + original.getName() + "]");
         }
