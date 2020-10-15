@@ -207,4 +207,14 @@ class FemtoInjectorTest {
 
         assertThat(exception.getMessage(), is("Binding superclass must not be null"));
     }
+
+    @Test
+    void throwsException_nullBindingImplementationPassedAsSuperclassBinding() {
+        var exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> injector.bind(SingleDependencyClass.class, null));
+
+        assertThat(exception.getMessage(), is("Binding implementation class must not be null"));
+    }
 }
