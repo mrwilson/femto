@@ -73,7 +73,7 @@ class FemtoInjectorTest {
                 };
 
         injector.bind(SingleDependencyClass.class);
-        injector.bind(SingleDependencyClass.Inner.class, instanceDependency);
+        injector.bindInstance(SingleDependencyClass.Inner.class, instanceDependency);
 
         var instance = injector.get(SingleDependencyClass.class);
 
@@ -110,10 +110,10 @@ class FemtoInjectorTest {
 
     @Test
     void throwsException_ifMultipleInstancesForSameClass() {
-        injector.bind(String.class, "one");
+        injector.bindInstance(String.class, "one");
 
         var exception =
-                assertThrows(InjectionException.class, () -> injector.bind(String.class, "two"));
+                assertThrows(InjectionException.class, () -> injector.bindInstance(String.class, "two"));
 
         assertThat(exception.getMessage(), is("Binding already exists for [java.lang.String]"));
     }
@@ -148,7 +148,7 @@ class FemtoInjectorTest {
 
     @Test
     void returnsBoundClass_BindingToInterface() {
-        injector.bind(ExampleInterface.class, new ImplementsExampleInterface());
+        injector.bindInstance(ExampleInterface.class, new ImplementsExampleInterface());
         injector.bind(DependsOnInterface.class);
 
         var instance = injector.get(DependsOnInterface.class);
