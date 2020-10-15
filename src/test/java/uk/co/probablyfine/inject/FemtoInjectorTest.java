@@ -113,7 +113,8 @@ class FemtoInjectorTest {
         injector.bindInstance(String.class, "one");
 
         var exception =
-                assertThrows(InjectionException.class, () -> injector.bindInstance(String.class, "two"));
+                assertThrows(
+                        InjectionException.class, () -> injector.bindInstance(String.class, "two"));
 
         assertThat(exception.getMessage(), is("Binding already exists for [java.lang.String]"));
     }
@@ -169,6 +170,18 @@ class FemtoInjectorTest {
     @Test
     void throwsException_nullBindingClassPassed() {
         var exception = assertThrows(IllegalArgumentException.class, () -> injector.bind(null));
+
+        assertThat(exception.getMessage(), is("Binding class must not be null"));
+    }
+
+    @Test
+    void throwsException_nullBindingClassPassedAsInstanceBinding() {
+        var instance = new Object();
+
+        var exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> injector.bindInstance(null, instance));
 
         assertThat(exception.getMessage(), is("Binding class must not be null"));
     }
