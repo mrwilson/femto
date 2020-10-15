@@ -58,6 +58,9 @@ public class FemtoInjector {
     }
 
     public <T> void bind(Class<T> klass) {
+        if (klass == null) {
+            throw new IllegalArgumentException("Binding class must not be null");
+        }
         bind(klass, klass);
     }
 
