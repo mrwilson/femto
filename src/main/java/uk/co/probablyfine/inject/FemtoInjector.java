@@ -64,22 +64,6 @@ public class FemtoInjector {
         bind(klass, klass);
     }
 
-    public <T> void bindInstance(Class<T> klass, T instance) {
-        if (klass == null) {
-            throw new IllegalArgumentException("Binding class must not be null");
-        }
-
-        if (instance == null) {
-            throw new IllegalArgumentException("Binding instance must not be null");
-        }
-
-        if (boundClasses.getOrDefault(klass, null) != null) {
-            throw new InjectionException("Binding already exists for [" + klass.getName() + "]");
-        }
-
-        boundClasses.put(klass, instance);
-    }
-
     public <T, U extends T> void bind(Class<T> original, Class<U> implementation) {
         if (original == null) {
             throw new IllegalArgumentException("Binding superclass must not be null");
@@ -95,6 +79,22 @@ public class FemtoInjector {
 
         boundClassToClass.put(original, implementation);
         boundClasses.put(implementation, null);
+    }
+
+    public <T> void bindInstance(Class<T> klass, T instance) {
+        if (klass == null) {
+            throw new IllegalArgumentException("Binding class must not be null");
+        }
+
+        if (instance == null) {
+            throw new IllegalArgumentException("Binding instance must not be null");
+        }
+
+        if (boundClasses.getOrDefault(klass, null) != null) {
+            throw new InjectionException("Binding already exists for [" + klass.getName() + "]");
+        }
+
+        boundClasses.put(klass, instance);
     }
 
     private <T> Class<?> implementingClass(Class<T> originalClass) {
