@@ -185,4 +185,16 @@ class FemtoInjectorTest {
 
         assertThat(exception.getMessage(), is("Binding class must not be null"));
     }
+
+    @Test
+    void throwsException_nullBindingInstancePassedAsInstanceBinding() {
+        var instance = new Object();
+
+        var exception =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () -> injector.bindInstance(SingleDependencyClass.class, null));
+
+        assertThat(exception.getMessage(), is("Binding instance must not be null"));
+    }
 }
